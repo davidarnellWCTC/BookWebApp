@@ -23,10 +23,12 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "AuthorController", urlPatterns = {"/AuthorController"})
 public class AuthorController extends HttpServlet {
     
-    private String DESTINATIONPAGE = "/AuthorList.jsp";
-    private String AUTHORLIST = "authorList";
+    final private String DESTINATIONPAGE = "/AuthorList.jsp";
+    final private String AUTHORLIST = "authorList";
     
-    private String ERRORMESSAGE = "Author list not found";
+    final private String ERRORMESSAGE = "Author list not found";
+    
+    final private String ACTION = "action";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +43,17 @@ public class AuthorController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        // creates a new AuthorService object to handle the Author objects
         AuthorService authorService = new AuthorService();
         
-        // retrieve the list of authors from the AuthorService Class
+        
+        
+        try {
+            
+            // retrieve the list of authors from the AuthorService Class
         List<Author> authorList = authorService.getAuthors();
+        
+        System.out.println("test");
         
         //set the author list as a retrievable attribute
         request.setAttribute(AUTHORLIST, authorList);
@@ -55,6 +64,10 @@ public class AuthorController extends HttpServlet {
         RequestDispatcher view =
                 request.getRequestDispatcher(DESTINATIONPAGE);
         view.forward(request, response);
+        
+        } catch (Exception e){
+            
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

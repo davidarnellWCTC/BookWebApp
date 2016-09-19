@@ -21,7 +21,7 @@
         <title>Author List</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        
         
         <div id="content">
             <h1>Complete Author List</h1>
@@ -30,11 +30,11 @@
 
             <%
                 //checks to see if there is a valid author list and prints the list
-                Object authorList = request.getAttribute("authorList");
+                Object authorList = request.getAttribute("/authorList");
 
                 if (authorList == null) {
                     out.println(request.getAttribute("errorMessage"));
-                    //out.println("test");
+                    out.println("Author List not found.");
                 }
             %>
 
@@ -44,6 +44,7 @@
                     <th>Author ID</th>
                     <th>Add Date</th>
                 </tr>
+                <!-- Getting error that there is no "author id" -->
                 <c:forEach var="author" items="${authorList}">
                     <tr>
                         <th>${author.authorName}</th>
