@@ -25,6 +25,8 @@ public class AuthorController extends HttpServlet {
     
     private String DESTINATIONPAGE = "/AuthorList.jsp";
     private String AUTHORLIST = "authorList";
+    
+    private String ERRORMESSAGE = "Author list not found";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,13 +42,15 @@ public class AuthorController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         AuthorService authorService = new AuthorService();
-        Author author = new Author();
         
         // retrieve the list of authors from the AuthorService Class
         List<Author> authorList = authorService.getAuthors();
         
         //set the author list as a retrievable attribute
         request.setAttribute(AUTHORLIST, authorList);
+        
+        // sets and error message if the author list is not found
+        request.setAttribute("errorMessage", ERRORMESSAGE);
         
         RequestDispatcher view =
                 request.getRequestDispatcher(DESTINATIONPAGE);

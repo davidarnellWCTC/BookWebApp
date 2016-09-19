@@ -29,13 +29,13 @@
             <h3>Authors in the Author List</h3>
 
             <%
+                //checks to see if there is a valid author list and prints the list
                 Object authorList = request.getAttribute("authorList");
 
                 if (authorList == null) {
                     out.println(request.getAttribute("errorMessage"));
                     //out.println("test");
                 }
-
             %>
 
             <table style="width:75%">
@@ -47,7 +47,7 @@
                 <c:forEach var="author" items="${authorList}">
                     <tr>
                         <th>${author.authorName}</th>
-                        <!--th>${author.authorId}</th-->
+                        <th>${author.authorId}</th>
                         <th>${author.dateAdded}</th>
                     </tr>
                 </c:forEach>            
