@@ -11,18 +11,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <!--meta http-equiv="Content-Type" content="text/html; charset=UTF-8"-->
+
         <!-- Latest compiled and minified CSS -->
-        <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
         <!-- Optional theme -->
-        <!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous"-->
-
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
         <title>Author List</title>
     </head>
     <body>
-        
-        
+
+
         <div id="content">
             <h1>Complete Author List</h1>
 
@@ -30,10 +29,10 @@
 
             <%
                 //checks to see if there is a valid author list and prints the list
-                Object authorList = request.getAttribute("/authorList");
+                Object authorList = request.getAttribute("authorList");
 
                 if (authorList == null) {
-                    out.println(request.getAttribute("errorMessage"));
+                    //out.println(request.getAttribute("errorMessage"));
                     out.println("Author List not found.");
                 }
             %>
@@ -45,6 +44,7 @@
                     <th>Add Date</th>
                 </tr>
                 <!-- Getting error that there is no "author id" -->
+                <!-- Fixed error, misspelled authorId -->
                 <c:forEach var="author" items="${authorList}">
                     <tr>
                         <th>${author.authorName}</th>
@@ -54,5 +54,8 @@
                 </c:forEach>            
             </table>
         </div>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </body>
 </html>

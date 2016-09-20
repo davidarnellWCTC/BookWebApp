@@ -53,7 +53,7 @@ public class AuthorController extends HttpServlet {
             // retrieve the list of authors from the AuthorService Class
         List<Author> authorList = authorService.getAuthors();
         
-        System.out.println("test");
+        //System.out.println("test1");
         
         //set the author list as a retrievable attribute
         request.setAttribute(AUTHORLIST, authorList);

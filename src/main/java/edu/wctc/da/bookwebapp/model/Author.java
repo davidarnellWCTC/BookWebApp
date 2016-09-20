@@ -15,19 +15,19 @@ public class Author {
     }
 
     public Author(int authorID) {
-        this.authorID = authorID;
+        this.authorId = authorID;
     }
     
-    private int authorID;
+    private int authorId;
     private String authorName;
     private Date dateAdded;
 
-    public int getAuthorID() {
-        return authorID;
+    public int getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthorID(int authorID) {
-        this.authorID = authorID;
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
     }
 
     public String getAuthorName() {
@@ -49,7 +49,7 @@ public class Author {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 71 * hash + this.authorID;
+        hash = 71 * hash + this.authorId;
         return hash;
     }
 
@@ -65,7 +65,7 @@ public class Author {
             return false;
         }
         final Author other = (Author) obj;
-        if (this.authorID != other.authorID) {
+        if (this.authorId != other.authorId) {
             return false;
         }
         return true;
@@ -73,7 +73,7 @@ public class Author {
 
     @Override
     public String toString() {
-        return "Author{" + "authorID=" + authorID + ", authorName=" + authorName + ", dateAdded=" + dateAdded + '}';
+        return "Author{" + "authorID=" + authorId + ", authorName=" + authorName + ", dateAdded=" + dateAdded + '}';
     }
     
     

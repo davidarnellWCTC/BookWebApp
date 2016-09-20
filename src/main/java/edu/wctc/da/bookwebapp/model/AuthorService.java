@@ -27,9 +27,9 @@ public class AuthorService {
         Author author2 = new Author();
         Author author3 = new Author();
 
-        author1.setAuthorID(1);
-        author2.setAuthorID(2);
-        author3.setAuthorID(3);
+        author1.setAuthorId(1);
+        author2.setAuthorId(2);
+        author3.setAuthorId(3);
 
         author1.setAuthorName("Ice T");
         author2.setAuthorName("Ice Cube");
