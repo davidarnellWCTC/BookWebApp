@@ -22,7 +22,7 @@
     <body>
 
 
-        <div id="content">
+        <div id="content" class="container">
             <h1>Complete Author List</h1>
 
             <h3>Authors in the Author List</h3>
@@ -37,19 +37,19 @@
                 }
             %>
 
-            <table style="width:75%">
+            <table style="width:50%" class="table table-striped table-bordered" >
                 <tr>
-                    <th>Author Name</th>
-                    <th>Author ID</th>
-                    <th>Add Date</th>
+                    <th class="text-center">Author Name</th>
+                    <th class="text-center">Author ID</th>
+                    <th class="text-center">Add Date</th>
                 </tr>
                 <!-- Getting error that there is no "author id" -->
                 <!-- Fixed error, misspelled authorId -->
                 <c:forEach var="author" items="${authorList}">
                     <tr>
-                        <th>${author.authorName}</th>
-                        <th>${author.authorId}</th>
-                        <th>${author.dateAdded}</th>
+                        <th class="text-center">${author.authorName}</th>
+                        <th class="text-center">${author.authorId}</th>
+                        <th class="text-center"><fmt:formatDate value="${author.dateAdded}" pattern="mm/dd/yy"/></th>                                               
                     </tr>
                 </c:forEach>            
             </table>
