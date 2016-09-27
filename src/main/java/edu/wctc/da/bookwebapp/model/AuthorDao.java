@@ -122,15 +122,15 @@ public class AuthorDao implements AuthorDaoStrategy {
     }
 
     @Override
-    public void deleteAuthorByPrimaryKey(String key)
+    public void deleteAuthorByPrimaryKey(int key)
             throws ClassNotFoundException, SQLException, NumberFormatException{
         
         // the first part of finding the records is opening the connection
         db.openConnection(driverClass, url, userName, password);
         
-        Integer primaryKeyValue = Integer.parseInt(key);
+        //Integer primaryKeyValue = Integer.parseInt(key);
         
-        db.deleteRecordByPrimaryKey("author", key);
+        db.deleteRecordByPrimaryKey("author", String.valueOf(key));
         
         db.closeConection();
         

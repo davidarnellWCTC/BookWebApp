@@ -165,7 +165,7 @@ public class MySqlDbStrategy implements DbStrategy {
         
         String sql = "Delete From " + tableName + " ";
         
-        PreparedStatement stmt = conn.p
+        PreparedStatement stmt = conn.prepareStatement(sql);
         
         stmt.setObject(1, primaryKeyValue);
         
