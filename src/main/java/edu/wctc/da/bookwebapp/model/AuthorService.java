@@ -4,10 +4,12 @@
 package edu.wctc.da.bookwebapp.model;
 
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,6 +54,7 @@ public class AuthorService {
     
     /**
      * This methos gets an author by the authorId by using the getAuthorList function
+     * I was able to reuse methods already created for this specific method
      * @param authorId
      * @return
      * @throws ClassNotFoundException
@@ -80,8 +83,18 @@ public class AuthorService {
         
         //System.out.println(authorList);
         
-        Author a = as.getAuthorById(1);
-        System.out.println(a);
+        //Author a = as.getAuthorById(1);
+        //System.out.println(a);
+        
+        Author a = new Author();
+        a.setAuthorName("John");
+        
+        Date date = new Date();
+        
+        a.setDateAdded(date);
+        
+        dao.createNewAuthor(a);
+        
     }
 
 }

@@ -22,7 +22,7 @@ public interface DbStrategy {
     
     void updateRecordByKey(String tableName, String key, List<String> colNames, List<Object> colValues);
     
-    void createNewRecord(String tableName, List<String> colNames, List<Object> colValues);
+    void createNewRecord(String tableName, List<String> colNames, List<Object> colValues)  throws SQLException;
     
     void deleteRecordByPrimaryKey(String tableName, String key);
 

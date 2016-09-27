@@ -71,16 +71,14 @@ public class AuthorDao implements AuthorDaoStrategy {
         return authors;
     }
 
-    public DbStrategy getDb() {
-        return db;
-    }
-
-    public void setDb(DbStrategy db) {
-        this.db = db;
-    }
-
-    
-
+    /**
+     * This method uses the get author list method to get a list of the authors
+     * Then the method gets the author object from the list by the authorId
+     * @param key
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */    
     @Override
     public Author findAuthorByKey(int key)  throws ClassNotFoundException, SQLException {
         List<Author> authors = getAuthorList();
@@ -94,14 +92,57 @@ public class AuthorDao implements AuthorDaoStrategy {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * This method takes the parameters for an author object and inserts them 
+     * into a new Author object
+     * @param author
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     @Override
-    public void createNewAuthor(Author author)   throws ClassNotFoundException, SQLException{
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void createNewAuthor(Author author) throws ClassNotFoundException, SQLException{
+        // String tableName, List<String> colNames, List<Object> colValues
+        
+        // sets the value for the tableName
+        String tableName = "author";
+        
+        List<String> colNames = new ArrayList<>();
+        // the authorId will be created automatically by the database
+        colNames.add("author_id");
+        colNames.add("author_name");
+        colNames.add("date_added");
+        
+        List<Object> colValues = new ArrayList<>();
+        colValues.add(author.getAuthorName());
+        colValues.add(author.getDateAdded());
+        
+        // creates the new record with the new Author object
+        db.createNewRecord(tableName, colNames, colValues);
+ 
     }
 
     @Override
-    public void deleteAuthorByPrimaryKey(int key)   throws ClassNotFoundException, SQLException{
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void deleteAuthorByPrimaryKey(String key)
+            throws ClassNotFoundException, SQLException, NumberFormatException{
+        
+        // the first part of finding the records is opening the connection
+        db.openConnection(driverClass, url, userName, password);
+        
+        Integer primaryKeyValue = Integer.parseInt(key);
+        
+        db.deleteRecordByPrimaryKey("author", key);
+        
+        db.closeConection();
+        
+        
+    }
+    
+    public DbStrategy getDb() {
+        return db;
+    }
+
+    public void setDb(DbStrategy db) {
+        this.db = db;
     }
     
     // throws generic exception to handle everything for the dbstrategy
