@@ -4,7 +4,10 @@
 package edu.wctc.da.bookwebapp.controller;
 
 import edu.wctc.da.bookwebapp.model.Author;
+import edu.wctc.da.bookwebapp.model.AuthorDao;
+import edu.wctc.da.bookwebapp.model.AuthorDaoStrategy;
 import edu.wctc.da.bookwebapp.model.AuthorService;
+import edu.wctc.da.bookwebapp.model.MySqlDbStrategy;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -43,8 +46,14 @@ public class AuthorController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        // create a new dao
+        AuthorDaoStrategy dao = new AuthorDao(new MySqlDbStrategy(), // db strategy passed into the AuthorDao constructor
+                "com.mysql.jdbc.Driver", //driver to use
+                "jdbc:mysql://localhost:3306/book", // url of the database
+                "root", "admin");
+        
         // creates a new AuthorService object to handle the Author objects
-        AuthorService authorService = new AuthorService();
+        AuthorService authorService = new AuthorService(dao);
         
         
         
