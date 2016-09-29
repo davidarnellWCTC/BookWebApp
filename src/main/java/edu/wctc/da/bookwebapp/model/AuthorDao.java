@@ -30,6 +30,7 @@ public class AuthorDao implements AuthorDaoStrategy {
         this.password = password;
     }
 
+    // need to change this so it's String primaryKey
     @Override
     public List<Author> getAuthorList() throws ClassNotFoundException, SQLException {
 
@@ -80,15 +81,23 @@ public class AuthorDao implements AuthorDaoStrategy {
      * @throws SQLException 
      */    
     @Override
-    public Author findAuthorByKey(int key)  throws ClassNotFoundException, SQLException {
+    public Author findAuthorByPrimaryKey(String key)  
+            throws ClassNotFoundException, SQLException,NumberFormatException {
+        
+        // gets the int value for the primary key
+        // the key for the authors list is an integer
+        int primaryKey = Integer.parseInt(key);
+        
         List<Author> authors = getAuthorList();
-        Author author = authors.get(key);
+        
+        Author author = authors.get(primaryKey);
         
         return author;
     }
 
+    // need to change this so it's String primaryKey
     @Override
-    public void updateAuthorByKey(Author author, int key) {
+    public void updateAuthorByPrimaryKey(Author author, int key) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -121,16 +130,18 @@ public class AuthorDao implements AuthorDaoStrategy {
  
     }
 
+    // need to change this so it's String primaryKey
     @Override
-    public void deleteAuthorByPrimaryKey(int key)
+    public void deleteAuthorByPrimaryKey(String key)
             throws ClassNotFoundException, SQLException, NumberFormatException{
         
         // the first part of finding the records is opening the connection
         db.openConnection(driverClass, url, userName, password);
         
-        //Integer primaryKeyValue = Integer.parseInt(key);
+        // if this method fails, a NumberFormatException is thrown
+        Integer primaryKeyValue = Integer.parseInt(key);
         
-        db.deleteRecordByPrimaryKey("author", String.valueOf(key));
+        db.deleteRecordByPrimaryKey("author", "author_id", primaryKeyValue);
         
         db.closeConection();
         

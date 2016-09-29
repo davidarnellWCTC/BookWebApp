@@ -16,13 +16,15 @@ public interface AuthorDaoStrategy {
     List<Author> getAuthorList() throws ClassNotFoundException, SQLException;
     
     // everything given to the controller as a String
-    Author findAuthorByKey(int key) 
+    Author findAuthorByPrimaryKey(String key) 
+            throws ClassNotFoundException, SQLException, NumberFormatException;
+    
+    void updateAuthorByPrimaryKey(Author author, int key) 
             throws ClassNotFoundException, SQLException;
     
-    void updateAuthorByKey(Author author, int key) throws ClassNotFoundException, SQLException;
-    
+//    void createNewAuthor(Author author) throws ClassNotFoundException, SQLException;
     void createNewAuthor(Author author) throws ClassNotFoundException, SQLException;
     
-    void deleteAuthorByPrimaryKey(int key) throws ClassNotFoundException, SQLException, NumberFormatException;
+    void deleteAuthorByPrimaryKey(String key) throws ClassNotFoundException, SQLException, NumberFormatException;
     
 }
