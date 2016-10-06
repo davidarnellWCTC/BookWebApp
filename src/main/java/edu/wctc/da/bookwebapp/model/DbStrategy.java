@@ -25,7 +25,7 @@ public interface DbStrategy {
     //Map<String, Object> findRecordByKey(String tableName, String key) throws SQLException;
     
     // Update
-    void updateRecordByKey(String tableName, String key, List<String> colNames, List<Object> colValues);
+    void updateRecordByKey(String tableName, Object primaryKeyValue, String primaryKeyColumnName, List<String> colNames, List<Object> colValues) throws SQLException;
     
     // Create
     void createNewRecord(String tableName, List<String> colNames, List<Object> colValues)  throws SQLException;

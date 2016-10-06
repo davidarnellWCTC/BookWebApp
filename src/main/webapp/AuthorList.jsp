@@ -42,6 +42,8 @@
                     <th class="text-center">Author Name</th>
                     <th class="text-center">Author ID</th>
                     <th class="text-center">Add Date</th>
+                    <th class="text-center">Edit</th>
+                    <th class="text-center">Delete</th>
                 </tr>
                 <!-- Getting error that there is no "author id" -->
                 <!-- Fixed error, misspelled authorId -->
@@ -49,12 +51,44 @@
                     <tr>
                         <th class="text-center">${author.authorName}</th>
                         <th class="text-center">${author.authorId}</th>
-                        <th class="text-center"><fmt:formatDate value="${author.dateAdded}" pattern="mm/dd/yy"/></th>                                               
+                        <th class="text-center"><fmt:formatDate value="${author.dateAdded}" pattern="mm/dd/yy"/></th>
+                        <th class="text-center">
+                            <!--button>Edit?</button-->
+                            <form method="POST" action="${pageContext.request.contextPath}/AuthorController?action=editAuthorRecord" 
+                                  id="authorList" name="authorList">
+                                <input type="submit" name="submit" value="Edit"/>
+                            </form>
+                        </th>
+                        <th class="text-center">
+                            <!--input value="Delete?"  name="deleteButton" id="deleteButton" action="AuthorController?action=deleteAuthorRecord" method="post" -->
+                            <!--button>Delete?</button-->
+                            <form method="POST" action="${pageContext.request.contextPath}/AuthorController?action=deleteAuthorRecord" 
+                                  id="authorList" name="authorList">
+                                <input type="submit" name="submit" value="Delete"/>
+                            </form>
+                        </th>
                     </tr>
                 </c:forEach>            
             </table>
         </div>
 
+        <div>
+            <form method="POST" action="${pageContext.request.contextPath}/AuthorController?action=addNewAuthorRecord" 
+                  id="authorList" name="authorList">
+                <input type="submit" name="submit" value="Add New Author"/>
+            </form>
+        </div>
+                  <!--div hidden-->
+                  <div>
+                      <%@include file='AddAuthor.jsp'%>
+                  </div>
+                  
+                  <!--div hidden-->
+                  <div>
+                      <%@include file='EditAuthor.jsp'%>
+                  </div>
+                  
+                  
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </body>
