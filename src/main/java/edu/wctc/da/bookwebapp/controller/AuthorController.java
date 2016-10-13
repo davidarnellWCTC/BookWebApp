@@ -46,6 +46,7 @@ public class AuthorController extends HttpServlet {
     final private String HOME_PAGE = "/Home.jsp";
     
     final private String AUTHORLIST = "authorList";
+    private List<Author> authorList = null;
 
     final private String ERROR_MESSAGE = "Author list not found";
 
@@ -105,7 +106,12 @@ public class AuthorController extends HttpServlet {
                     destinationPage = AUTHOR_LIST_PAGE;
                     //view = request.getRequestDispatcher(AUTHOR_LIST_PAGE);
                     // retrieve the list of authors from the AuthorService Class
-                    refreshAuthorList(request);
+                    //refreshAuthorList(request);
+                    
+                    // authorList is ending up null
+                    authorList = authorService.getAuthors();
+                    
+                    request.setAttribute(AUTHORLIST, authorList);
                     
                     //destinationPage = AUTHOR_LIST_PAGE;
                     break;
@@ -151,7 +157,10 @@ public class AuthorController extends HttpServlet {
 
         }
 
-        view = request.getRequestDispatcher(destinationPage);
+//        dispatcher = getServletContext().getRequestDispatcher(response.encodeURL(destinationPage));
+//        view = request.getRequestDispatcher(destinationPage);
+
+        view = getServletContext().getRequestDispatcher(response.encodeURL(destinationPage));
         view.forward(request, response);
     }
     
@@ -165,7 +174,7 @@ public class AuthorController extends HttpServlet {
     private void refreshAuthorList(HttpServletRequest request)//, HttpServletResponse response)
             throws ClassNotFoundException, SQLException {
 
-        List<Author> authorList = authorService.getAuthors();
+        authorList = authorService.getAuthors();
 
         request.setAttribute(AUTHORLIST, authorList);
     }
@@ -217,19 +226,9 @@ public class AuthorController extends HttpServlet {
         userName = getServletContext().getInitParameter("db.userName");
         password = getServletContext().getInitParameter("db.password");
         
-        //webmasterEmail =getServletContext().getInitParameter("webmaster-email");
-        
-//        driverClass = "com.mysql.jdbc.Driver"; //driver to use
-//        url = "jdbc:mysql://localhost:3306/book"; // url of the database
-//        userName = "root";
-//        password = "admin";
     }
 
     private void configDbConnection() throws NamingException {
         authorService.getDao().initDao(driverClass, url, userName, password);
-    }
-
-    private Date Date() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.*;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import javax.sql.DataSource;
 
 /**
  *
@@ -19,6 +20,8 @@ public class AuthorDao implements AuthorDaoStrategy, Serializable{
     // DbStrategy, used in Constructor to ensure class has one
     @Inject
     private DbStrategy db;
+    
+    private DataSource ds;
 
     // openConnection info used in getAuthorList
     private String driverClass;
@@ -26,10 +29,10 @@ public class AuthorDao implements AuthorDaoStrategy, Serializable{
     private String userName;
     private String password;
     
-    final private String AUTHORTABLE = "author";
-    final private String AUTHORNAMECOLUMN = "author_name";
-    final private String AUTHORIDCOLUMN = "author_id";
-    final private String AUTHORDATEADDEDCOLUMN = "date_added";
+    final private String AUTHOR_TABLE = "author";
+    final private String AUTHOR_NAME_COLUMN = "author_name";
+    final private String AUTHOR_ID_COLUMN = "author_id";
+    final private String AUTHOR_DATE_ADDED_COLUMN = "date_added";
 
     public AuthorDao() {
     }
@@ -55,7 +58,7 @@ public class AuthorDao implements AuthorDaoStrategy, Serializable{
         db.openConnection(driverClass, url, userName, password);
 
         //List of Maps of all the records in the table
-        List<Map<String, Object>> records = db.findAllRecords(AUTHORTABLE, 500);
+        List<Map<String, Object>> records = db.findAllRecords(AUTHOR_TABLE, 500);
 
         // List to store the Author Objects
         List<Author> authors = new ArrayList<>();
@@ -65,17 +68,17 @@ public class AuthorDao implements AuthorDaoStrategy, Serializable{
             Author author = new Author();
 
             // gets the author_id as an object, parses it to a String, and parses it to an integer
-            int authorId = Integer.parseInt(rec.get(AUTHORIDCOLUMN).toString());
+            int authorId = Integer.parseInt(rec.get(AUTHOR_ID_COLUMN).toString());
 
             //sets the authorId value for the Author object created in this for loop
             author.setAuthorId(authorId);
 
             // gets the author name and checks if it's null
-            String authorName = rec.get(AUTHORNAMECOLUMN).toString();
+            String authorName = rec.get(AUTHOR_NAME_COLUMN).toString();
             author.setAuthorName(authorName != null ? authorName : "");
 
             //gets the date added Date Object, just casts it to a Date Object
-            Date dateAdded = (Date) rec.get(AUTHORDATEADDEDCOLUMN);
+            Date dateAdded = (Date) rec.get(AUTHOR_DATE_ADDED_COLUMN);
             author.setDateAdded(dateAdded);
 
             // adds the new Author to the List
@@ -127,14 +130,14 @@ public class AuthorDao implements AuthorDaoStrategy, Serializable{
         // String tableName, List<String> colNames, List<Object> colValues
         
         // sets the value for the tableName
-        String tableName = AUTHORTABLE;
+        String tableName = AUTHOR_TABLE;
         Object primaryKeyValue = authorId;
-        String primaryKeyColumnName = AUTHORIDCOLUMN;
+        String primaryKeyColumnName = AUTHOR_ID_COLUMN;
         
         List<String> colNames = new ArrayList<>();
-        colNames.add(AUTHORIDCOLUMN);
-        colNames.add(AUTHORNAMECOLUMN);
-        colNames.add(AUTHORDATEADDEDCOLUMN);
+        colNames.add(AUTHOR_ID_COLUMN);
+        colNames.add(AUTHOR_NAME_COLUMN);
+        colNames.add(AUTHOR_DATE_ADDED_COLUMN);
         
         List<Object> colValues = new ArrayList<>();
         colValues.add(authorId);
@@ -161,13 +164,13 @@ public class AuthorDao implements AuthorDaoStrategy, Serializable{
         Date dateAdded = new Date();
         
         // sets the value for the tableName
-        String tableName = AUTHORTABLE;
+        String tableName = AUTHOR_TABLE;
         
         List<String> colNames = new ArrayList<>();
         // the authorId will be created automatically by the database
         //colNames.add("author_id");
-        colNames.add(AUTHORNAMECOLUMN);
-        colNames.add(AUTHORDATEADDEDCOLUMN);
+        colNames.add(AUTHOR_NAME_COLUMN);
+        colNames.add(AUTHOR_DATE_ADDED_COLUMN);
         
         List<Object> colValues = new ArrayList<>();
         colValues.add(authorName);
@@ -190,7 +193,7 @@ public class AuthorDao implements AuthorDaoStrategy, Serializable{
         // if this method fails, a NumberFormatException is thrown
         Integer primaryKeyValue = Integer.parseInt(key);
         
-        db.deleteRecordByPrimaryKey(AUTHORTABLE, AUTHORIDCOLUMN, primaryKeyValue);
+        db.deleteRecordByPrimaryKey(AUTHOR_TABLE, AUTHOR_ID_COLUMN, primaryKeyValue);
         
         db.closeConection();
         
@@ -203,6 +206,14 @@ public class AuthorDao implements AuthorDaoStrategy, Serializable{
 
     public void setDb(DbStrategy db) {
         this.db = db;
+    }
+    
+    public DataSource getDs() {
+        return ds;
+    }
+
+    public void setDs(DataSource ds) {
+        this.ds = ds;
     }
     
     
