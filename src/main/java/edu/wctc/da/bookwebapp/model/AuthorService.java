@@ -94,9 +94,10 @@ public class AuthorService implements Serializable{
      * @throws ClassNotFoundException
      * @throws SQLException 
      */
-    public void createNewAuthor(String authorName, String dateAdded) 
+    public void createNewAuthor(String authorName) 
             throws ClassNotFoundException, SQLException{
-        dao.createNewAuthor(authorName, dateAdded);
+        
+        dao.createNewAuthor(authorName);
     }
     
     public AuthorDaoStrategy getDao() {

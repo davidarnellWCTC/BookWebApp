@@ -8,7 +8,7 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<form action="AuthorController?action=createAuthorRecord" method="post">
+<form action="AuthorController?action=newAuthorRecord" method="post">
     <input type="text"  name="authorName" placeholder="Author Name"/>
     <input value="Create Author" type="submit" name="authorCreateButton" id="authorCreateButton" >
 </form>

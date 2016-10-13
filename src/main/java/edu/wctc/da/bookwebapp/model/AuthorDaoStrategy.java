@@ -26,7 +26,7 @@ public interface AuthorDaoStrategy {
             throws ClassNotFoundException, SQLException;
     
 //    void createNewAuthor(Author author) throws ClassNotFoundException, SQLException;
-    void createNewAuthor(String authorName, String dateAdded) throws ClassNotFoundException, SQLException;
+    void createNewAuthor(String authorName) throws ClassNotFoundException, SQLException;
     
     void deleteAuthorByPrimaryKey(String authorId) throws ClassNotFoundException, SQLException, NumberFormatException;
     

@@ -10,12 +10,14 @@ import edu.wctc.da.bookwebapp.model.AuthorService;
 import edu.wctc.da.bookwebapp.model.MySqlDbStrategy;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,18 +38,20 @@ public class AuthorController extends HttpServlet {
     private String userName;
     private String password;
 
-    private String dbJindiName;
-
+//    private String dbJindiName;
     @Inject
     private AuthorService authorService;
 
-    final private String DESTINATIONPAGE = "/AuthorList.jsp";
+    final private String AUTHOR_LIST_PAGE = "/AuthorList.jsp";
+    final private String HOME_PAGE = "/Home.jsp";
+    
     final private String AUTHORLIST = "authorList";
 
-    final private String ERRORMESSAGE = "Author list not found";
+    final private String ERROR_MESSAGE = "Author list not found";
 
     final private String ACTION = "action";
 
+    final private String GO_TO_HOME_PAGE ="homePage";
     final private String DELETE_AUTHOR_RECORD = "deleteAuthorRecord";
     final private String EDIT_AUTHOR_RECORD = "editAuthorRecord";
     final private String CREATE_NEW_AUTHOR_RECORD = "newAuthorRecord";
@@ -56,6 +60,8 @@ public class AuthorController extends HttpServlet {
     final private String AUTHOR_ID = "authorId";
     final private String AUTHOR_NAME = "authorName";
     final private String AUTHOR_CREATED_DATE = "dateCreated";
+    
+    private String webmasterEmail;    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -70,46 +76,47 @@ public class AuthorController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        String destinationPage = "";
+        
         String authorId = null;
         String authorName = null;
         String dateCreated = null;
 
-        List<Author> authorList = null;
+        //List<Author> authorList = null;
 
-        // create a new dao
-//        AuthorDaoStrategy dao = new AuthorDao();
-//        AuthorDaoStrategy dao = new AuthorDao(new MySqlDbStrategy(), // db strategy passed into the AuthorDao constructor
-//                "com.mysql.jdbc.Driver", //driver to use
-//                "jdbc:mysql://localhost:3306/book", // url of the database
-//                "root", "admin");
-        // creates a new AuthorService object to handle the Author objects
-        //AuthorService authorService = new AuthorService();
+        RequestDispatcher view = null;
+
+        String errorMessage = ERROR_MESSAGE;
+        
         try {
 
             configDbConnection();
 
             // get the action requested from the JSP page
             String action = request.getParameter(ACTION);
-
-            String errorMessage = ERRORMESSAGE;
-            RequestDispatcher view = null;
-
+            
             switch (action) {
+                case GO_TO_HOME_PAGE:
+                    destinationPage = HOME_PAGE;                    
+                    break;
+                    
                 case GET_ALL_AUTHOR_RECORDS:
+                    
+                    destinationPage = AUTHOR_LIST_PAGE;
+                    //view = request.getRequestDispatcher(AUTHOR_LIST_PAGE);
                     // retrieve the list of authors from the AuthorService Class
-                    authorList = authorService.getAuthors();
-
-                    //set the author list as a retrievable attribute
-                    request.setAttribute(AUTHORLIST, authorList);
+                    refreshAuthorList(request);
+                    
+                    //destinationPage = AUTHOR_LIST_PAGE;
                     break;
 
                 case DELETE_AUTHOR_RECORD:
                     authorId = request.getParameter(AUTHOR_ID);
                     authorService.deleteAuthorById(authorId);
-
-                    authorList = authorService.getAuthors();
-
-                    request.setAttribute(AUTHORLIST, authorList);
+                    
+                    refreshAuthorList(request);
+                    
+                    destinationPage = AUTHOR_LIST_PAGE;
                     break;
 
                 case EDIT_AUTHOR_RECORD:
@@ -118,30 +125,49 @@ public class AuthorController extends HttpServlet {
                     dateCreated = request.getParameter(AUTHOR_CREATED_DATE);
                     authorService.updateAuthorById(authorId, authorName, dateCreated);
 
-                    authorList = authorService.getAuthors();
-
-                    request.setAttribute(AUTHORLIST, authorList);
+                    refreshAuthorList(request);
+                    
+                    destinationPage = AUTHOR_LIST_PAGE;
                     break;
 
                 case CREATE_NEW_AUTHOR_RECORD:
-                    authorId = request.getParameter(AUTHOR_ID);
                     authorName = request.getParameter(AUTHOR_NAME);
 
-                    authorService.createNewAuthor(authorName, dateCreated);
-
-                    authorList = authorService.getAuthors();
-
-                    request.setAttribute(AUTHORLIST, authorList);
+                    authorService.createNewAuthor(authorName);
+                    
+                    refreshAuthorList(request);
+                    
+                    destinationPage = AUTHOR_LIST_PAGE;
                     break;
 
                 default:
-                    view = request.getRequestDispatcher(GET_ALL_AUTHOR_RECORDS);
+                    refreshAuthorList(request);
+                    destinationPage = AUTHOR_LIST_PAGE;
+                    view = request.getRequestDispatcher(destinationPage);
             }
-
+            
             request.setAttribute("errorMessage", errorMessage);
         } catch (Exception e) {
 
         }
+
+        view = request.getRequestDispatcher(destinationPage);
+        view.forward(request, response);
+    }
+    
+    /**
+     * This method refreshes the List<Author> list and sets the attribute to the
+     * authorList accessible in the JSP page
+     * @param request - HttpServletRequest
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
+    private void refreshAuthorList(HttpServletRequest request)//, HttpServletResponse response)
+            throws ClassNotFoundException, SQLException {
+
+        List<Author> authorList = authorService.getAuthors();
+
+        request.setAttribute(AUTHORLIST, authorList);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -185,13 +211,25 @@ public class AuthorController extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        driverClass = "com.mysql.jdbc.Driver"; //driver to use
-        url = "jdbc:mysql://localhost:3306/book"; // url of the database
-        userName = "root";
-        password = "admin";
+        
+        driverClass = getServletContext().getInitParameter("db.driver.class"); //driver to use
+        url = getServletContext().getInitParameter("db.url"); // url of the database
+        userName = getServletContext().getInitParameter("db.userName");
+        password = getServletContext().getInitParameter("db.password");
+        
+        //webmasterEmail =getServletContext().getInitParameter("webmaster-email");
+        
+//        driverClass = "com.mysql.jdbc.Driver"; //driver to use
+//        url = "jdbc:mysql://localhost:3306/book"; // url of the database
+//        userName = "root";
+//        password = "admin";
     }
 
-    private void configDbConnection() {
-        authorService.getDao().initDao(driverClass, url, url, password);
+    private void configDbConnection() throws NamingException {
+        authorService.getDao().initDao(driverClass, url, userName, password);
+    }
+
+    private Date Date() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

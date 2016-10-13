@@ -154,11 +154,11 @@ public class AuthorDao implements AuthorDaoStrategy, Serializable{
      * @throws SQLException 
      */
     @Override
-    public void createNewAuthor(String authorName, String dateAdded) throws ClassNotFoundException, SQLException{
+    public void createNewAuthor(String authorName) throws ClassNotFoundException, SQLException{
         
         db.openConnection(driverClass, url, userName, password);
         
-        // String tableName, List<String> colNames, List<Object> colValues
+        Date dateAdded = new Date();
         
         // sets the value for the tableName
         String tableName = AUTHORTABLE;

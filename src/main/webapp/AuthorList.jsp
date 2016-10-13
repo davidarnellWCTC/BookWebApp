@@ -26,6 +26,12 @@
             <h1>Complete Author List</h1>
 
             <h3>Authors in the Author List</h3>
+            
+            <div>
+                <%@include file='AddAuthor.jsp'%>
+            </div>
+            
+            <p><a href="${pageContext.request.contextPath}/AuthorController?action=homePage">Home Page</a></p>
 
             <%
                 //checks to see if there is a valid author list and prints the list
@@ -51,11 +57,14 @@
                     <tr>
                         <th class="text-center">${author.authorName}</th>
                         <th class="text-center">${author.authorId}</th>
-                        <th class="text-center"><fmt:formatDate value="${author.dateAdded}" pattern="mm/dd/yy"/></th>
+                        <th class="text-center"><fmt:formatDate value="${author.dateAdded}" pattern="M/d/yyyy"/></th>
                         <th class="text-center">
                             <!--button>Edit?</button-->
                             <form method="POST" action="${pageContext.request.contextPath}/AuthorController?action=editAuthorRecord" 
                                   id="authorList" name="authorList">
+                                <!--input hidden name="authorId" value="${author.authorId}"/-->
+                                <!--input hidden name="authorId" value="${author.authorName}"/-->
+                                <!--input hidden name="authorId" value="${author.dateAdded}"/-->
                                 <input type="submit" name="submit" value="Edit"/>
                             </form>
                         </th>
@@ -63,29 +72,34 @@
                             <!--input value="Delete?"  name="deleteButton" id="deleteButton" action="AuthorController?action=deleteAuthorRecord" method="post" -->
                             <!--button>Delete?</button-->
                             <form method="POST" action="${pageContext.request.contextPath}/AuthorController?action=deleteAuthorRecord" 
-                                  id="authorList" name="authorList">
+                                  id="deleteButton" name="deleteButton">
+                                <input hidden name="authorId" value="${author.authorId}"/>
                                 <input type="submit" name="submit" value="Delete"/>
                             </form>
                         </th>
                     </tr>
+                    
+                    <tr>
+                    <div>
+                        <!--%@include file='EditAuthor.jsp'%-->
+                    </div>
+                </tr>
                 </c:forEach>            
             </table>
         </div>
 
-        <div>
+        <!--div>
             <form method="POST" action="${pageContext.request.contextPath}/AuthorController?action=addNewAuthorRecord" 
                   id="authorList" name="authorList">
                 <input type="submit" name="submit" value="Add New Author"/>
             </form>
-        </div>
+        </div-->
                   <!--div hidden-->
-                  <div>
-                      <%@include file='AddAuthor.jsp'%>
-                  </div>
+                  
                   
                   <!--div hidden-->
                   <div>
-                      <%@include file='EditAuthor.jsp'%>
+                      <!--%@include file='EditAuthor.jsp'%-->
                   </div>
                   
                   
