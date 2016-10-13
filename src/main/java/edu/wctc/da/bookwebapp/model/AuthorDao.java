@@ -21,7 +21,7 @@ public class AuthorDao implements AuthorDaoStrategy, Serializable{
     @Inject
     private DbStrategy db;
     
-    private DataSource ds;
+    //private DataSource ds;
 
     // openConnection info used in getAuthorList
     private String driverClass;
@@ -42,6 +42,13 @@ public class AuthorDao implements AuthorDaoStrategy, Serializable{
 //        
 //    }
     
+    /**
+     * initDao method to set the driver, URL, user, and password
+     * @param driver
+     * @param url
+     * @param user
+     * @param password 
+     */
     @Override
     public void initDao(String driver, String url, String user, String password){
         setDriverClass(driver);
@@ -72,10 +79,25 @@ public class AuthorDao implements AuthorDaoStrategy, Serializable{
 
             //sets the authorId value for the Author object created in this for loop
             author.setAuthorId(authorId);
+            
+            String authorName;
+            
+            // check to see if the authorName is null
+            if(rec.get(AUTHOR_NAME_COLUMN).toString() == null){
+                authorName = "NAME_NOT_ENTERED";
+                author.setAuthorName(authorName);
+            } else {
+                authorName = rec.get(AUTHOR_NAME_COLUMN).toString();
+                author.setAuthorName(authorName);
+            }
 
             // gets the author name and checks if it's null
-            String authorName = rec.get(AUTHOR_NAME_COLUMN).toString();
-            author.setAuthorName(authorName != null ? authorName : "");
+            //String authorName = rec.get(AUTHOR_NAME_COLUMN).toString();
+            //String authorName = "test";
+            //author.setAuthorName(authorName != null ? authorName : "");
+            //authorName="getName";
+            
+            //author.setAuthorName(authorName);
 
             //gets the date added Date Object, just casts it to a Date Object
             Date dateAdded = (Date) rec.get(AUTHOR_DATE_ADDED_COLUMN);
@@ -206,14 +228,6 @@ public class AuthorDao implements AuthorDaoStrategy, Serializable{
 
     public void setDb(DbStrategy db) {
         this.db = db;
-    }
-    
-    public DataSource getDs() {
-        return ds;
-    }
-
-    public void setDs(DataSource ds) {
-        this.ds = ds;
     }
     
     

@@ -38,7 +38,7 @@ public class AuthorController extends HttpServlet {
     private String userName;
     private String password;
 
-//    private String dbJindiName;
+    
     @Inject
     private AuthorService authorService;
 
@@ -46,7 +46,7 @@ public class AuthorController extends HttpServlet {
     final private String HOME_PAGE = "/Home.jsp";
     
     final private String AUTHORLIST = "authorList";
-    private List<Author> authorList = null;
+    private List<Author> authorList;
 
     final private String ERROR_MESSAGE = "Author list not found";
 
@@ -83,7 +83,7 @@ public class AuthorController extends HttpServlet {
         String authorName = null;
         String dateCreated = null;
 
-        //List<Author> authorList = null;
+        //List<Author> authorList = authorService.getAuthors();
 
         RequestDispatcher view = null;
 
@@ -107,6 +107,8 @@ public class AuthorController extends HttpServlet {
                     //view = request.getRequestDispatcher(AUTHOR_LIST_PAGE);
                     // retrieve the list of authors from the AuthorService Class
                     //refreshAuthorList(request);
+                    
+                    // add code to checkf for duplicate records
                     
                     // authorList is ending up null
                     authorList = authorService.getAuthors();
@@ -174,7 +176,7 @@ public class AuthorController extends HttpServlet {
     private void refreshAuthorList(HttpServletRequest request)//, HttpServletResponse response)
             throws ClassNotFoundException, SQLException {
 
-        authorList = authorService.getAuthors();
+        List<Author> authorList = authorService.getAuthors();
 
         request.setAttribute(AUTHORLIST, authorList);
     }

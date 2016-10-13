@@ -7,14 +7,22 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import javax.sql.DataSource;
 
 /**
  *
  * @author David Arnell
  */
 public interface AuthorDaoStrategy {
-    
+    /**
+     * initDao in AuthorDaoStrategy
+     * @param driver
+     * @param url
+     * @param user
+     * @param password 
+     */
     public void initDao(String driver, String url, String user, String password);
+    //public void initDao(DataSource ds);
 
     List<Author> getAuthorList() throws ClassNotFoundException, SQLException;
     

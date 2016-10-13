@@ -9,14 +9,15 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 
-<th class="text-center"><td colspan = 2>Enter new Name:</td></th>
-<th class="text-center"><td colspan = 3></td></th>
-<th class="text-center">
+<td class="text-center" colspan = "2">Enter new Name:</td>
+
+<td class="text-center" colspan = "3">
     <form action="AuthorController?action=editAuthorRecord" method="post">
         <input hidden name="authorId" value="${author.authorId}"/>
-        <input hidden name="dateAdded" value="${author.dateAdded}"/>
-        <input type="text"  name="authorName" placeholder="New Author Name"/>
-        <input value="Edit Author" type="submit" name="authorEditButton" id="authorEditButton" >
+        <input hidden name="dateCreated" value="${author.dateAdded}"/>
+        <input type="text"  name="authorName" placeholder="${author.authorName}"/>
+        <input value="Confirm Edit" type="submit" name="authorEditButton" id="authorEditButton" >
     </form>
-</th>
+</td>
+
 
