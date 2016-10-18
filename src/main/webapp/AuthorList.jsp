@@ -17,9 +17,9 @@
 
         <!-- Optional theme -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
-        
+
         <link href="BookWebAppCSS.css" rel="stylesheet" type="text/css"/>
-        
+
         <title>Author List</title>
     </head>
     <body>
@@ -29,15 +29,14 @@
             <h1>Complete Author List</h1>
 
             <h3>Authors in the Author List</h3>
-            
+
             <p><a href="${pageContext.request.contextPath}/AuthorController?action=homePage">Home Page</a></p>
-            
+
             <div>
                 <%@include file='AddAuthor.jsp'%>
             </div>
-            
+
             </br>
-            
 
             <%
                 //checks to see if there is a valid author list and prints the list
@@ -66,13 +65,9 @@
                         <td class="text-center"><fmt:formatDate value="${author.dateAdded}" pattern="M/d/yyyy"/></td>
                         <td class="text-center">
                             <!--button>Edit?</button-->
-                            <form method="POST" action="${pageContext.request.contextPath}/AuthorController?action=editAuthorRecord" 
-                                  id="authorList" name="authorList">
-                                <!--input hidden name="authorId" value="${author.authorId}"/-->
-                                <!--input hidden name="authorId" value="${author.authorName}"/-->
-                                <!--input hidden name="authorId" value="${author.dateAdded}"/-->
-                                <input type="submit" name="submit" value="Edit"/>
-                            </form>
+                            <!--  -->
+                            <input type="submit" name="submit" value="Edit" class="editButton" id="authorId${author.authorId}"/>
+
                         </td>
                         <td class="text-center">
                             <!--input value="Delete?"  name="deleteButton" id="deleteButton" action="AuthorController?action=deleteAuthorRecord" method="post" -->
@@ -84,15 +79,16 @@
                             </form>
                         </td>
                     </tr>
-                    
-                    <tr class="editAuthor">
+
+                    <!-- The tr "table row" has an id of "authorId#" to make the id a String -->
+                    <tr class="editAuthor" id="authorId${author.authorId}">
                         <%@include file='EditAuthor.jsp'%>                        
                     </tr>
                 </c:forEach>            
             </table>
         </div>
-                  
-                  
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="BookWebAppJS.js" type="text/javascript"></script>
